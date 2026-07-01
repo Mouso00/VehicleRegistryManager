@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<baseui:BaseContentPage
+    x:Class="VehicleRegistryManager.Area.Authentication.View.LoadingView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:baseui="clr-namespace:VehicleRegistryManager.Infrastructure.BaseUI">
+
+    <baseui:BaseContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#3B82C4" />
+            <GradientStop Offset="1.0" Color="#1E5EA8" />
+        </LinearGradientBrush>
+    </baseui:BaseContentPage.Background>
+
+    <Grid>
+        <VerticalStackLayout
+            HorizontalOptions="Center"
+            Spacing="16"
+            VerticalOptions="Center">
+            <Image
+                HeightRequest="120"
+                HorizontalOptions="Center"
+                Source="logo.png"
+                WidthRequest="120" />
+            <Label
+                FontAttributes="Bold"
+                FontSize="35"
+                HorizontalOptions="Center"
+                Text="VManager"
+                TextColor="White" />
+
+            <ActivityIndicator
+                Margin="0,16,0,0"
+                IsRunning="True"
+                Color="White" />
+        </VerticalStackLayout>
+    </Grid>
+
+</baseui:BaseContentPage>

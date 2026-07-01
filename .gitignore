@@ -1,0 +1,56 @@
+# .NET / Visual Studio / .NET MAUI
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.assets.json
+*.nuget.props
+*.nuget.targets
+
+## MSBuild / Roslyn
+*.binlog
+.generated/
+
+## .NET MAUI / mobile
+*.keystore
+*.jks
+*.mobileprovision
+*.p12
+*.cer
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## Local app data / secrets
+*.db3
+appsettings.*.local.json
+secrets.json

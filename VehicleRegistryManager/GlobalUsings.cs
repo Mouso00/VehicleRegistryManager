@@ -1,0 +1,1 @@
+﻿global using VehicleRegistryManager.Infrastructure.Interfaces;

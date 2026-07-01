@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<baseui:BaseContentPage
+    x:Class="VehicleRegistryManager.Area.VehicleCategories.View.AddAndEditVehicleView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:baseui="clr-namespace:VehicleRegistryManager.Infrastructure.BaseUI"
+    xmlns:controls="clr-namespace:VehicleRegistryManager.Controls"
+    BackgroundColor="#F2F3F5">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  Header  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,16"
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="14">
+            <Image
+                Grid.Column="0"
+                HeightRequest="24"
+                Source="arrow_back.png"
+                VerticalOptions="Center"
+                WidthRequest="24">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Label
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="{Binding Title}"
+                TextColor="#1F2430"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!--  Form  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,4,20,28" Spacing="18">
+
+                <!--  Created / updated dates (edit mode only)  -->
+                <VerticalStackLayout IsVisible="{Binding IsEdit}" Spacing="2">
+                    <Label
+                        FontSize="12"
+                        Text="{Binding CreatedText}"
+                        TextColor="#8A909C" />
+                    <Label
+                        FontSize="12"
+                        IsVisible="{Binding HasUpdated}"
+                        Text="{Binding UpdatedText}"
+                        TextColor="#8A909C" />
+                </VerticalStackLayout>
+
+                <!--  PHOTO  -->
+                <VerticalStackLayout Spacing="8">
+                    <Label
+                        CharacterSpacing="0.5"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="PHOTO"
+                        TextColor="#6B7280" />
+                    <Border
+                        Padding="0"
+                        BackgroundColor="#ECEEF1"
+                        Stroke="#C9CED6"
+                        StrokeDashArray="6,4"
+                        StrokeDashOffset="0"
+                        StrokeThickness="1.5">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickPhotoCommand}" />
+                        </Border.GestureRecognizers>
+                        <Grid>
+                            <!--  Placeholder (shown when no photo picked)  -->
+                            <VerticalStackLayout
+                                Padding="20,28"
+                                IsVisible="{Binding HasNoPhoto}"
+                                Spacing="6">
+                                <Image
+                                    HeightRequest="34"
+                                    Source="image_upload.png"
+                                    WidthRequest="34" />
+                                <Label
+                                    Margin="0,6,0,0"
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    HorizontalOptions="Center"
+                                    Text="Upload photo"
+                                    TextColor="#4B5563" />
+                                <Label
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="PNG or JPG, up to 5MB"
+                                    TextColor="#9AA0AC" />
+                            </VerticalStackLayout>
+
+                            <!--  Preview (shown after a photo is picked)  -->
+                            <Image
+                                Aspect="AspectFill"
+                                HeightRequest="180"
+                                IsVisible="{Binding HasPhoto}"
+                                Source="{Binding PhotoPath}" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  CATEGORY  -->
+                <VerticalStackLayout Spacing="8">
+                    <Label CharacterSpacing="0.5" FontSize="12">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="CATEGORY "
+                                    TextColor="#6B7280" />
+                                <Span Text="*" TextColor="#E5247E" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Border
+                        Padding="14,0,14,0"
+                        BackgroundColor="White"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.06"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Grid>
+                            <Picker
+                                Title="Select category"
+                                BackgroundColor="Transparent"
+                                FontSize="15"
+                                HeightRequest="52"
+                                ItemsSource="{Binding Categories}"
+                                SelectedItem="{Binding SelectedCategory}"
+                                TextColor="#1F2430" />
+                            <Image
+                                HeightRequest="20"
+                                HorizontalOptions="End"
+                                InputTransparent="True"
+                                Source="chevron_down.png"
+                                VerticalOptions="Center"
+                                WidthRequest="20" />
+                        </Grid>
+                    </Border>
+                    <Label
+                        FontSize="12"
+                        IsVisible="{Binding HasCategoryError}"
+                        Text="{Binding CategoryError}"
+                        TextColor="#E5484D" />
+                </VerticalStackLayout>
+
+                <!--  BRAND  -->
+                <VerticalStackLayout Spacing="8">
+                    <Label CharacterSpacing="0.5" FontSize="12">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="BRAND "
+                                    TextColor="#6B7280" />
+                                <Span Text="*" TextColor="#E5247E" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Border
+                        Padding="14,0"
+                        BackgroundColor="White"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.06"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Entry
+                            BackgroundColor="Transparent"
+                            FontSize="15"
+                            HeightRequest="52"
+                            Placeholder="e.g. Toyota"
+                            PlaceholderColor="#B5BAC4"
+                            Text="{Binding Brand}"
+                            TextColor="#1F2430" />
+                    </Border>
+                    <Label
+                        FontSize="12"
+                        IsVisible="{Binding HasBrandError}"
+                        Text="{Binding BrandError}"
+                        TextColor="#E5484D" />
+                </VerticalStackLayout>
+
+                <!--  MODEL  -->
+                <VerticalStackLayout Spacing="8">
+                    <Label CharacterSpacing="0.5" FontSize="12">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="MODEL "
+                                    TextColor="#6B7280" />
+                                <Span Text="*" TextColor="#E5247E" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Border
+                        Padding="14,0"
+                        BackgroundColor="White"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.06"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Entry
+                            BackgroundColor="Transparent"
+                            FontSize="15"
+                            HeightRequest="52"
+                            Placeholder="e.g. Corolla"
+                            PlaceholderColor="#B5BAC4"
+                            Text="{Binding Model}"
+                            TextColor="#1F2430" />
+                    </Border>
+                    <Label
+                        FontSize="12"
+                        IsVisible="{Binding HasModelError}"
+                        Text="{Binding ModelError}"
+                        TextColor="#E5484D" />
+                </VerticalStackLayout>
+
+                <!--  PLATE NUMBER  -->
+                <VerticalStackLayout Spacing="8">
+                    <Label CharacterSpacing="0.5" FontSize="12">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="PLATE NUMBER "
+                                    TextColor="#6B7280" />
+                                <Span Text="*" TextColor="#E5247E" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Border
+                        Padding="14,0"
+                        BackgroundColor="White"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.06"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Image
+                                Grid.Column="0"
+                                HeightRequest="18"
+                                Source="hash.png"
+                                VerticalOptions="Center"
+                                WidthRequest="18" />
+                            <Entry
+                                Grid.Column="1"
+                                BackgroundColor="Transparent"
+                                FontSize="15"
+                                HeightRequest="52"
+                                Placeholder="ABC-1234"
+                                PlaceholderColor="#B5BAC4"
+                                Text="{Binding PlateNumber}"
+                                TextColor="#1F2430" />
+                        </Grid>
+                    </Border>
+                    <Label
+                        FontSize="12"
+                        IsVisible="{Binding HasPlateNumberError}"
+                        Text="{Binding PlateNumberError}"
+                        TextColor="#E5484D" />
+                </VerticalStackLayout>
+
+                <!--  YEAR  -->
+                <VerticalStackLayout Spacing="8">
+                    <Label
+                        CharacterSpacing="0.5"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="YEAR"
+                        TextColor="#6B7280" />
+                    <Border
+                        Padding="10,0,10,0"
+                        BackgroundColor="White"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.06"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <!--  Typed year  -->
+                            <Entry
+                                Grid.Column="0"
+                                BackgroundColor="Transparent"
+                                FontSize="15"
+                                HeightRequest="52"
+                                Keyboard="Numeric"
+                                Placeholder="2024"
+                                PlaceholderColor="#B5BAC4"
+                                Text="{Binding Year}"
+                                TextColor="#1F2430" />
+                            <!--  Calendar icon opens the year wheel popup  -->
+                            <Border
+                                Grid.Column="1"
+                                Margin="0,0,-3,0"
+                                HorizontalOptions="End"
+                                Stroke="Transparent"
+                                WidthRequest="45">
+                                <Grid>
+                                    <Image
+                                        HeightRequest="20"
+                                        Source="calendar.png"
+                                        VerticalOptions="Center"
+                                        WidthRequest="20" />
+                                </Grid>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnPickYearTapped" />
+                                </Border.GestureRecognizers>
+                            </Border>
+
+
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  COMMENTS  -->
+                <VerticalStackLayout Spacing="8">
+                    <Label
+                        CharacterSpacing="0.5"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="COMMENTS"
+                        TextColor="#6B7280" />
+                    <Border
+                        Padding="14,6"
+                        BackgroundColor="White"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.06"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Editor
+                            AutoSize="TextChanges"
+                            BackgroundColor="Transparent"
+                            FontSize="15"
+                            HeightRequest="100"
+                            Placeholder="Notes about this vehicle…"
+                            PlaceholderColor="#B5BAC4"
+                            Text="{Binding Comments}"
+                            TextColor="#1F2430" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  Save button  -->
+                <Border
+                    Margin="0,8,0,0"
+                    HeightRequest="56"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="28" />
+                    </Border.StrokeShape>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Offset="0.0" Color="#3B82C4" />
+                            <GradientStop Offset="1.0" Color="#1A4E8A" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SaveCommand}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Image
+                            HeightRequest="20"
+                            Source="save.png"
+                            VerticalOptions="Center"
+                            WidthRequest="20" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Save vehicle"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!--  Delete button (edit mode only)  -->
+                <Border
+                    BackgroundColor="#FDECEC"
+                    HeightRequest="56"
+                    IsVisible="{Binding IsEdit}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="28" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding DeleteCommand}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Image
+                            HeightRequest="20"
+                            Source="trash.png"
+                            VerticalOptions="Center"
+                            WidthRequest="20" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Delete vehicle"
+                            TextColor="#E5484D"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+
+</baseui:BaseContentPage>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<baseui:BaseContentPage
+    x:Class="VehicleRegistryManager.Area.Dashboard.View.DashboardView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:baseui="clr-namespace:VehicleRegistryManager.Infrastructure.BaseUI"
+    xmlns:model="clr-namespace:VehicleRegistryManager.Model"
+    BackgroundColor="#F2F3F5">
+
+    <Grid>
+
+        <CollectionView ItemsSource="{Binding Categories}">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="14" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+
+            <!--  Header: gradient + stats + section title  -->
+            <CollectionView.Header>
+                <VerticalStackLayout Spacing="0">
+
+                    <Border Padding="20,24,20,28" StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="0,0,28,28" />
+                        </Border.StrokeShape>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Offset="0.0" Color="#3B82C4" />
+                                <GradientStop Offset="1.0" Color="#1E5EA8" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                Margin="0,6,0,0"
+                                FontAttributes="Bold"
+                                FontSize="32"
+                                Text="Welcome back"
+                                TextColor="White" />
+                            <Label
+                                FontSize="14"
+                                Text="Here's a quick look at your vehicles today."
+                                TextColor="#FCE3EF" />
+
+                            <Grid
+                                Margin="0,18,0,0"
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="12">
+
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="16,16"
+                                    BackgroundColor="#33FFFFFF"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="16" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="30"
+                                            Text="{Binding TotalVehicles}"
+                                            TextColor="White" />
+                                        <Label
+                                            CharacterSpacing="1"
+                                            FontSize="11"
+                                            Text="TOTAL VEHICLES"
+                                            TextColor="#E7F0FA" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="16,16"
+                                    BackgroundColor="#33FFFFFF"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="16" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="30"
+                                            Text="{Binding CategoriesCount}"
+                                            TextColor="White" />
+                                        <Label
+                                            CharacterSpacing="1"
+                                            FontSize="11"
+                                            Text="CATEGORIES"
+                                            TextColor="#E7F0FA" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Label
+                        Margin="20,24,20,12"
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        Text="Browse by category"
+                        TextColor="#1F2430" />
+                </VerticalStackLayout>
+            </CollectionView.Header>
+
+            <!--  Category card  -->
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Margin="20,0"
+                        Padding="14"
+                        BackgroundColor="White"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type baseui:BaseContentPage}}, Path=BindingContext.SelectCategoryCommand}" CommandParameter="{Binding Category}" />
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                BackgroundColor="{Binding IconBackground}"
+                                HeightRequest="48"
+                                StrokeThickness="0"
+                                VerticalOptions="Center"
+                                WidthRequest="48">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="24" />
+                                </Border.StrokeShape>
+                                <Image
+                                    HeightRequest="24"
+                                    HorizontalOptions="Center"
+                                    Source="{Binding Icon}"
+                                    VerticalOptions="Center"
+                                    WidthRequest="24" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="2"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="17"
+                                    Text="{Binding Name}"
+                                    TextColor="#1F2430" />
+                                <Label
+                                    FontSize="13"
+                                    Text="{Binding CountText}"
+                                    TextColor="#8A909C" />
+                            </VerticalStackLayout>
+                            <Label
+                                Grid.Column="2"
+                                FontAttributes="Bold"
+                                FontSize="24"
+                                Text="{Binding Count}"
+                                TextColor="#3A4150"
+                                VerticalOptions="Center" />
+                            <Image
+                                Grid.Column="3"
+                                Margin="0,3,0,0"
+                                HeightRequest="18"
+                                Source="chevron.png"
+                                VerticalOptions="Center"
+                                WidthRequest="18" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+
+
+        </CollectionView>
+
+        <!--  Floating action button  -->
+        <Border
+            Margin="0,0,20,20"
+            HeightRequest="56"
+            HorizontalOptions="End"
+            StrokeThickness="0"
+            VerticalOptions="End"
+            WidthRequest="56">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="28" />
+            </Border.StrokeShape>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding GoToAddVehicleCommand}" />
+            </Border.GestureRecognizers>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#3B82C4" />
+                    <GradientStop Offset="1.0" Color="#1A4E8A" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Shadow>
+                <Shadow
+                    Brush="LightBlue"
+                    Opacity="0.5"
+                    Radius="16"
+                    Offset="0,6" />
+            </Border.Shadow>
+            <Label
+                FontSize="28"
+                HorizontalOptions="Center"
+                Text="+"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Border>
+
+    </Grid>
+
+</baseui:BaseContentPage>

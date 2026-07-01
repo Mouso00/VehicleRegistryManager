@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<baseui:BaseContentPage
+    x:Class="VehicleRegistryManager.Area.VehicleCategories.View.VehicleListView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:baseui="clr-namespace:VehicleRegistryManager.Infrastructure.BaseUI"
+    xmlns:model="clr-namespace:VehicleRegistryManager.Model"
+    BackgroundColor="#F2F3F5">
+    <ContentPage.Resources />
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!--  Header  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,16"
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="14">
+            <Image
+                Grid.Column="0"
+                HeightRequest="24"
+                Source="arrow_back.png"
+                VerticalOptions="Center"
+                WidthRequest="24">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Label
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="{Binding Title}"
+                TextColor="#1F2430"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!--  Search bar  -->
+        <Border
+            Grid.Row="1"
+            Margin="20,0,20,4"
+            Padding="14,0"
+            BackgroundColor="#ECEEF1"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="14" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                <Image
+                    Grid.Column="0"
+                    HeightRequest="18"
+                    Source="search.png"
+                    VerticalOptions="Center"
+                    WidthRequest="18" />
+                <Entry
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    FontSize="15"
+                    HeightRequest="48"
+                    Placeholder="{Binding SearchPlaceholder}"
+                    PlaceholderColor="#9AA0AC"
+                    Text="{Binding SearchText}"
+                    TextColor="#1F2430" />
+            </Grid>
+        </Border>
+
+        <!--  Vehicle list  -->
+        <CollectionView
+            Grid.Row="2"
+            Margin="0,15,0,5"
+            ItemSizingStrategy="MeasureAllItems"
+            ItemsSource="{Binding Vehicles}"
+            SelectionMode="None">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="14" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+
+
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Margin="20,0"
+                        Padding="0"
+                        BackgroundColor="White"
+                        StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type baseui:BaseContentPage}}, Path=BindingContext.EditVehicleCommand}" CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#000000"
+                                Opacity="0.08"
+                                Radius="14"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="0">
+                            <Grid
+                                Padding="14"
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="14">
+                                <Border
+                                    Grid.Column="0"
+                                    BackgroundColor="#ECEEF1"
+                                    HeightRequest="56"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Center"
+                                    WidthRequest="56">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <Grid>
+                                        <!--  Photo (when the vehicle has one)  -->
+                                        <Image
+                                            Aspect="AspectFill"
+                                            IsVisible="{Binding HasPhoto}"
+                                            Source="{Binding PhotoPath}" />
+                                        <!--  Category icon (fallback)  -->
+                                        <Image
+                                            HeightRequest="28"
+                                            HorizontalOptions="Center"
+                                            IsVisible="{Binding HasNoPhoto}"
+                                            Source="{Binding Icon}"
+                                            VerticalOptions="Center"
+                                            WidthRequest="28" />
+                                    </Grid>
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="4"
+                                    VerticalOptions="Center">
+                                    <Label FontSize="17">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span
+                                                    FontAttributes="Bold"
+                                                    Text="{Binding Brand}"
+                                                    TextColor="#1F2430" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding Model}" TextColor="#8A909C" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label
+                                        FontSize="13"
+                                        Text="{Binding YearText}"
+                                        TextColor="#8A909C" />
+                                    <Border
+                                        Padding="10,3"
+                                        BackgroundColor="#DCEBFB"
+                                        HorizontalOptions="Start"
+                                        StrokeThickness="0">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="12"
+                                            Text="{Binding PlateNumber}"
+                                            TextColor="#2563A8" />
+                                    </Border>
+                                    <Label
+                                        FontSize="12"
+                                        Text="{Binding AddedText}"
+                                        TextColor="#9AA0AC" />
+                                </VerticalStackLayout>
+                            </Grid>
+
+
+
+                            <Grid ColumnDefinitions="*,Auto,*">
+                                <Grid Grid.Column="0" Padding="0,12">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type baseui:BaseContentPage}}, Path=BindingContext.EditVehicleCommand}" CommandParameter="{Binding .}" />
+                                    </Grid.GestureRecognizers>
+                                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                                        <Image
+                                            HeightRequest="16"
+                                            Source="pencil.png"
+                                            VerticalOptions="Center"
+                                            WidthRequest="16" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="Edit"
+                                            TextColor="#1E5EA8"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                                <BoxView
+                                    Grid.Column="1"
+                                    BackgroundColor="#EEF0F3"
+                                    HeightRequest="30"
+                                    VerticalOptions="Center"
+                                    WidthRequest="1" />
+                                <Grid Grid.Column="2" Padding="0,12">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type baseui:BaseContentPage}}, Path=BindingContext.DeleteVehicleCommand}" CommandParameter="{Binding .}" />
+                                    </Grid.GestureRecognizers>
+                                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                                        <Image
+                                            HeightRequest="16"
+                                            Source="trash.png"
+                                            VerticalOptions="Center"
+                                            WidthRequest="16" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="Delete"
+                                            TextColor="#E5484D"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+
+
+        </CollectionView>
+
+        <!--  Empty state (no search results)  -->
+        <VerticalStackLayout
+            Grid.Row="2"
+            HorizontalOptions="Center"
+            IsVisible="{Binding IsEmpty}"
+            Spacing="6"
+            VerticalOptions="Center">
+            <Label
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="Center"
+                Text="No vehicles found"
+                TextColor="#6B7280" />
+            <Label
+                FontSize="14"
+                HorizontalOptions="Center"
+                Text="Try a different search term"
+                TextColor="#9AA0AC" />
+        </VerticalStackLayout>
+
+        <!--  Floating action button  -->
+        <Border
+            Grid.Row="2"
+            Margin="0,0,20,20"
+            HeightRequest="56"
+            HorizontalOptions="End"
+            StrokeThickness="0"
+            VerticalOptions="End"
+            WidthRequest="56">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="28" />
+            </Border.StrokeShape>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding GoToAddVehicleCommand}" />
+            </Border.GestureRecognizers>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#3B82C4" />
+                    <GradientStop Offset="1.0" Color="#1A4E8A" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.Shadow>
+                <Shadow
+                    Brush="LightBlue"
+                    Opacity="0.5"
+                    Radius="16"
+                    Offset="0,6" />
+            </Border.Shadow>
+            <Label
+                FontSize="28"
+                HorizontalOptions="Center"
+                Text="+"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Border>
+
+    </Grid>
+
+</baseui:BaseContentPage>

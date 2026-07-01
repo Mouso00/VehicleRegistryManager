@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="VehicleRegistryManager.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dashboard="clr-namespace:VehicleRegistryManager.Area.Dashboard.View"
+    xmlns:local="clr-namespace:VehicleRegistryManager"
+    xmlns:vehicleCategories="clr-namespace:VehicleRegistryManager.Area.VehicleCategories.View"
+    Title="VehicleRegistryManager">
+
+    <TabBar Route="Main">
+        <ShellContent
+            Title="Dashboard"
+            ContentTemplate="{DataTemplate dashboard:DashboardView}"
+            Icon="grid.png"
+            Route="Dashboard" />
+        <ShellContent
+            Title="Vehicle Category"
+            ContentTemplate="{DataTemplate vehicleCategories:VehicleCategoryView}"
+            Icon="categories.png"
+            Route="VehicleCategory" />
+    </TabBar>
+
+</Shell>
