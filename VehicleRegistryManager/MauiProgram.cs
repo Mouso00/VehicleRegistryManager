@@ -21,6 +21,22 @@ namespace VehicleRegistryManager
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                })
+                .ConfigureMauiHandlers(handlers =>
+                {
+#if IOS
+                    Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoBorder", (handler, _) =>
+                        handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None);
+
+                    Microsoft.Maui.Handlers.PickerHandler.Mapper.AppendToMapping("NoBorder", (handler, _) =>
+                        handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None);
+
+                    Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("NoBorder", (handler, _) =>
+                    {
+                        handler.PlatformView.Layer.BorderWidth = 0;
+                        handler.PlatformView.Layer.BorderColor = UIKit.UIColor.Clear.CGColor;
+                    });
+#endif
                 });
 
             builder.Services.AddSingleton<INavigationService, NavigationService>();
